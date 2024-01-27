@@ -60,7 +60,7 @@ const Login = () => {
     >
       <button
         style={{
-          width: "20%",
+          width: "30%",
           height: 40,
           background: "dodgerblue",
           borderRadius: 5,
