@@ -9,7 +9,6 @@ type SearchObject = {
   url: string;
 };
 
-
 const SearchHistory = () => {
   const [searchData, setSearchData] = useState<
     Array<{ label: string; value: string }>
@@ -28,9 +27,15 @@ const SearchHistory = () => {
     (async () => {
       if (session) {
         const token = session["accessToken"];
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/searches`, {
-          headers: { "Content-Type": "application/json", "x-auth-key": token },
-        });
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/searches`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-key": token,
+            },
+          }
+        );
         const reqData = response.data["data"].map((t: SearchObject) => {
           return { label: t.url, value: t.url };
         });
@@ -44,14 +49,14 @@ const SearchHistory = () => {
       if (url) window.open(url, "_blank");
     }, 500);
   };
-  return searchData.length > 0 ? (
+  return (
     <div
       style={{
-        width: "30%",
+        width: "50%",
         height: "20%",
         display: "flex",
         flexDirection: "column",
-        marginTop: 20,
+        marginTop: '5%',
       }}
     >
       <Select
@@ -77,8 +82,6 @@ const SearchHistory = () => {
         name="Select a search"
       />
     </div>
-  ) : (
-    ""
   );
 };
 

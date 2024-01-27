@@ -148,11 +148,11 @@ export default async function SearchPage() {
               href={`${process.env.CLIENT_URL}/search`}
               target="_parent"
             >
-              Search
+              Search..
             </a>
           </text>
         ) : (
-          "Log in to search through your browse history"
+          "Log in to search through your browsing history!"
         )}
       </p>
       <DynamicLogin />

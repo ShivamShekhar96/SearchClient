@@ -4,7 +4,6 @@ import { getSession, signIn, signOut, useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-
 const Login = () => {
   const [authToken, setAuthToken] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -48,26 +47,24 @@ const Login = () => {
     <div
       title="Login"
       style={{
-        width: "100%",
-        justifyContent: "center",
+        position: 'absolute',
+        top: 0,
+        width: "10%",
         margin: 10,
-        top: "60%",
-        left: "40%",
-        position: "absolute",
-        height: "30%",
+        right: 0,
         alignItems: "flex-end",
       }}
     >
       <button
         style={{
-          width: "30%",
+          width: "100%",
           height: 40,
           background: "dodgerblue",
           borderRadius: 5,
         }}
         onClick={onClick}
       >
-        {isLoading ? "...loading" : authToken ? "Sign out" : "Sign in"}
+        {isLoading ? "...loading" : authToken ? "Log out" : "Log in"}
       </button>
     </div>
   );
