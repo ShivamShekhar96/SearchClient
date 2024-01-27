@@ -19,7 +19,7 @@ export const authOptions = {
     signIn: async ({ profile, account, user }: any) => {
       user.accessToken = account.id_token;
       await axios.post(
-        `${process.env.API_BASE_URL}/api/v1/users/login`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/users/login`,
         {
           email: profile["email"],
         },

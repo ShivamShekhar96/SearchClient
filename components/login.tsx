@@ -4,7 +4,6 @@ import { getSession, signIn, signOut, useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:4000";
 
 const Login = () => {
   const [authToken, setAuthToken] = useState<string | undefined>(undefined);
@@ -25,7 +24,7 @@ const Login = () => {
 
   const logoutUser = async () => {
     await axios.post(
-      `${API_BASE_URL}/api/v1/users/logout`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/users/logout`,
       {},
       {
         headers: {

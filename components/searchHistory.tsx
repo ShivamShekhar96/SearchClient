@@ -9,7 +9,6 @@ type SearchObject = {
   url: string;
 };
 
-const API_BASE_URL = "http://localhost:4000";
 
 const SearchHistory = () => {
   const [searchData, setSearchData] = useState<
@@ -29,7 +28,7 @@ const SearchHistory = () => {
     (async () => {
       if (session) {
         const token = session["accessToken"];
-        const response = await axios.get(`${API_BASE_URL}/api/v1/searches`, {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/searches`, {
           headers: { "Content-Type": "application/json", "x-auth-key": token },
         });
         const reqData = response.data["data"].map((t: SearchObject) => {
@@ -62,7 +61,7 @@ const SearchHistory = () => {
           colors: {
             ...theme.colors,
             primary25: "hotpink",
-            primary: "black",
+            primary: "grey",
           },
         })}
         styles={{
