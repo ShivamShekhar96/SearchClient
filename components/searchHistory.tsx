@@ -47,7 +47,7 @@ const SearchHistory = () => {
   const onSelect = (url: string | undefined) => {
     setTimeout(() => {
       if (url) window.open(url, "_blank");
-    }, 500);
+    }, 100);
   };
   return (
     <div
