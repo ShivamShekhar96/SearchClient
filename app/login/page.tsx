@@ -1,6 +1,5 @@
 import dynamic from "next/dynamic";
 import { cookies } from "next/headers";
-import { headers } from "next/headers";
 
 const DynamicLogin = dynamic<{}>(() =>
   (import("../../components/login") as any).then(

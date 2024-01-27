@@ -1,11 +1,8 @@
 import axios from "axios";
-import { profile } from "console";
 import NextAuth, { getServerSession } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import { signIn } from "next-auth/react";
-import { cookies } from "next/headers";
 
-export const authOptions = {
+const authOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -48,7 +45,7 @@ export const authOptions = {
   },
 };
 
-export const getAuth = () => getServerSession(authOptions as any);
+const getAuth = () => getServerSession(authOptions as any);
 
 const handler = NextAuth(authOptions as any);
 export { handler as GET, handler as POST };
