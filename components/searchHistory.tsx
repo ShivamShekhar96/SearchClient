@@ -6,6 +6,10 @@ import Select from "react-select";
 import { getSession } from "next-auth/react";
 import { useDebounce } from "use-debounce";
 
+type SearchObject = {
+  url: string;
+};
+
 const SearchHistory = () => {
   const [searchData, setSearchData] = useState<
     Array<{ label: string; value: string }>
@@ -43,12 +47,9 @@ const SearchHistory = () => {
           },
         }
       );
-      const reqData = [
-        {
-          label: response.data["data"]?.url,
-          value: response.data["data"]?.url,
-        },
-      ];
+      const reqData = response.data["data"].map((t: SearchObject) => {
+        return { label: t.url, value: t.url };
+      });
       setSearchData(reqData);
       setLoading(false);
     }

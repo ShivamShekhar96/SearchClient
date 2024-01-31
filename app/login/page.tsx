@@ -9,7 +9,7 @@ const DynamicLogin = dynamic<{}>(() =>
 
 export default async function SearchPage() {
   const getCookies: any = cookies();
-  const isUserSignedIn = !!getCookies.get("next-auth.session-token");
+  const isUserSignedIn = !!getCookies.get("next-auth.session-token") || !!getCookies.get("__Secure-next-auth.session-token");
 
   return (
     <main className="flex min-h-screen flex-col items-center p-24 h-96">
