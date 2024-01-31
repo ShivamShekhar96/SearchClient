@@ -16,11 +16,6 @@ const Login = () => {
     })();
   }, []);
 
-  const getAuthToken = async () => {
-    const token = await axios.get(`${window.location.origin}/api/auth/token`);
-    return token.data;
-  };
-
   const logoutUser = async () => {
     await axios.post(
       `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/users/logout`,

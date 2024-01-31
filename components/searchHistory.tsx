@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Select from "react-select";
 import { getSession } from "next-auth/react";
+import { useDebounce } from "use-debounce";
 
 type SearchObject = {
   url: string;
@@ -14,42 +15,72 @@ const SearchHistory = () => {
     Array<{ label: string; value: string }>
   >([]);
 
-  const [session, setSession] = useState<any>(null);
+  const [sessionToken, setSessionToken] = useState<string>("");
 
-  const [loading,setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const [inputText, setInputText] = useState<string>("");
+  const [query] = useDebounce(inputText, 1000);
+
+  useEffect(() => {
+    fetchSearch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query]);
 
   useEffect(() => {
     (async () => {
       const session: any = await getSession();
-      setSession(session);
+      const token = session["accessToken"];
+      setSessionToken(token);
     })();
   }, []);
 
-  const fetchSearchData = async () => {
-    if (session) {
-      setLoading(true)
-      const token = session["accessToken"];
+  const fetchSearch = async () => {
+    if (sessionToken && inputText) {
+      setLoading(true);
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/searches`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/search/?query=${inputText}`,
         {
           headers: {
             "Content-Type": "application/json",
-            "x-auth-key": token,
+            "x-auth-key": sessionToken,
           },
         }
       );
-      const reqData = response.data["data"].map((t: SearchObject) => {
-        return { label: t.url, value: t.url };
-      });
+      const reqData = [
+        {
+          label: response.data["data"]?.url,
+          value: response.data["data"]?.url,
+        },
+      ];
       setSearchData(reqData);
-      setLoading(false)
+      setLoading(false);
     }
   };
+  // const fetchSearchData = async () => {
+  //   if (sessionToken) {
+  //     setLoading(true)
+  //     const response = await axios.get(
+  //       `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/searches`,
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           "x-auth-key": sessionToken,
+  //         },
+  //       }
+  //     );
+  //     const reqData = response.data["data"].map((t: SearchObject) => {
+  //       return { label: t.url, value: t.url };
+  //     });
+  //     setSearchData(reqData);
+  //     setLoading(false)
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchSearchData()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [session]);
+  // useEffect(() => {
+  //   fetchSearchData();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [sessionToken]);
 
   const onSelect = (url: string | undefined) => {
     setTimeout(() => {
@@ -82,11 +113,14 @@ const SearchHistory = () => {
             color: "black",
           }),
         }}
-        noOptionsMessage={async () => {
-          setLoading(true)
-          await fetchSearchData();
-          setLoading(false)
-          return "";
+        // noOptionsMessage={async () => {
+        //   setLoading(true)
+        //   await fetchSearchData();
+        //   setLoading(false)
+        //   return "";
+        // }}
+        onInputChange={(e) => {
+          setInputText(e);
         }}
         options={searchData}
         isLoading={loading}
