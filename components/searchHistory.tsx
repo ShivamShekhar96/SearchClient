@@ -16,6 +16,8 @@ const SearchHistory = () => {
 
   const [session, setSession] = useState<any>(null);
 
+  const [loading,setLoading] = useState<boolean>(false)
+
   useEffect(() => {
     (async () => {
       const session: any = await getSession();
@@ -23,25 +25,30 @@ const SearchHistory = () => {
     })();
   }, []);
 
+  const fetchSearchData = async () => {
+    if (session) {
+      setLoading(true)
+      const token = session["accessToken"];
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/searches`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-key": token,
+          },
+        }
+      );
+      const reqData = response.data["data"].map((t: SearchObject) => {
+        return { label: t.url, value: t.url };
+      });
+      setSearchData(reqData);
+      setLoading(false)
+    }
+  };
+
   useEffect(() => {
-    (async () => {
-      if (session) {
-        const token = session["accessToken"];
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/searches`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "x-auth-key": token,
-            },
-          }
-        );
-        const reqData = response.data["data"].map((t: SearchObject) => {
-          return { label: t.url, value: t.url };
-        });
-        setSearchData(reqData);
-      }
-    })();
+    fetchSearchData()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
   const onSelect = (url: string | undefined) => {
@@ -56,7 +63,7 @@ const SearchHistory = () => {
         height: "20%",
         display: "flex",
         flexDirection: "column",
-        marginTop: '5%',
+        marginTop: "5%",
       }}
     >
       <Select
@@ -75,7 +82,14 @@ const SearchHistory = () => {
             color: "black",
           }),
         }}
+        noOptionsMessage={async () => {
+          setLoading(true)
+          await fetchSearchData();
+          setLoading(false)
+          return "";
+        }}
         options={searchData}
+        isLoading={loading}
         onChange={(e) => onSelect(e?.value)}
         isSearchable={true}
         isClearable={true}
