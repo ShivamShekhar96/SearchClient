@@ -15,7 +15,7 @@ const DynamicLogin = dynamic<{}>(() =>
 
 export default function SearchPage() {
   const getCookies: any = cookies();
-  const isUserSignedIn = !!getCookies.get("next-auth.session-token")?.value;
+  const isUserSignedIn = !!getCookies.get("next-auth.session-token") || !!getCookies.get("__Secure-next-auth.session-token");
   return (
     <main className="flex min-h-screen flex-col items-center p-24 h-96">
       <div className="z-10 max-w-5xl w-full items-center justify-center font-mono text-sm lg:flex h-1/5">
@@ -147,7 +147,7 @@ export default function SearchPage() {
       <p className="fixed left-0 top-0 mt-5 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
         {isUserSignedIn
           ? "Search through your browse history!"
-          : "Log in to search browse history!"}
+          : "Log in to search browse history"}
       </p>
       <DynamicSearch />
       <DynamicLogin />
