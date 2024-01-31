@@ -6,10 +6,6 @@ import Select from "react-select";
 import { getSession } from "next-auth/react";
 import { useDebounce } from "use-debounce";
 
-type SearchObject = {
-  url: string;
-};
-
 const SearchHistory = () => {
   const [searchData, setSearchData] = useState<
     Array<{ label: string; value: string }>

@@ -1,6 +1,6 @@
 "use client";
 
-import { getSession, signIn, signOut, useSession } from "next-auth/react";
+import { getSession, signIn, signOut } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
